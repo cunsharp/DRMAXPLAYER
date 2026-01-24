@@ -1,0 +1,20 @@
+/* Shaka controls.css (extracted) - partial/full copy from CDN */
+/* LICENSE: Apache-2.0 (Shaka Player) */
+
+.shaka-hidden{display:none!important}.shaka-video-container
+position:relative;top:0;left:0;display:flex;font-family:Roboto,sans-serif,Tengw
+rTelcontar;font-weight:400;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none}.shaka-video-container
+.material-icons-round{font-family:"Material Icons Round";font-size:24px}.shaka-video-container:fullscreen{width:100%;height:100%;background-color:#000}.shaka-video-container:fullscreen
+.shaka-
+ext-container{font-size:4.4vmin}.shaka-video-container:-webkit-full-screen{widt
+:100%;height:100%;background-color:#000}.shaka-video-container:-webkit-full-screen
+.shaka-text-container{font-size:4.4vmin}.shaka-video-container:-moz-full-scr
+een{width:100%;height:100%;background-color:#000}.shaka-video-container:-moz-full-screen
+.shaka-text-container{font-size:4.4vmin}.shaka-video-container:-ms-full
+creen{width:100%;height:100%;background-color:#000}.shaka-video-container:-ms-fullscreen
+.shaka-text-container{font-size:4.4vmin}.shaka-controls-container{posi
+ion:absolute;top:0;left:0;right:0;bottom:0;margin:0;padding:0;width:100%;height
+100%;box-sizing:border-box;display:flex;flex-direction:column;justify-content:f
+ex-end;align-items:center;z-index:1}.shaka-video-container:not([shaka-controls=true]) .shaka-controls-container{display:none}/* truncated for brevity */
+
+/* Use the CDN controls.css for the full file if you need the complete content. */
