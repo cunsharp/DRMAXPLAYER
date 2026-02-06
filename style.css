@@ -1,0 +1,1451 @@
+/* Modern Streaming Player Theme - Sportika Style */
+
+:root {
+    --player-destructive: #dc2626;
+    --player-destructive-hover: #b91c1c;
+    --player-foreground: #ffffff;
+    --player-foreground-muted: rgba(255, 255, 255, 0.75);
+    --player-bg-popover: rgba(30, 30, 30, 0.95);
+    --player-border: rgba(255, 255, 255, 0.12);
+    --player-ring: rgba(255, 255, 255, 0.2);
+}
+
+.shaka-controls-container,
+.shaka-play-button-container,
+.shaka-scrim-container {
+    display: none !important;
+}
+
+.custom-controls {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 16px 32px 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    z-index: 45;
+    pointer-events: auto;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.custom-pause-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    z-index: 30;
+}
+
+.custom-pause-overlay.is-visible {
+    opacity: 1;
+}
+
+.custom-pause-icon {
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
+}
+
+.custom-controls.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.custom-controls-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.custom-time {
+    color: rgba(255, 255, 255, 0.75);
+    min-width: 45px;
+    font-size: 14px;
+    font-weight: 500;
+    display: none;
+}
+
+.custom-seekbar {
+    position: relative;
+    flex: 1;
+    height: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.custom-seekbar-track {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.12);
+    overflow: hidden;
+    transition: height 0.2s ease;
+}
+
+.custom-seekbar-buffer {
+    height: 100%;
+    width: 0;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.custom-seekbar-progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    background: var(--player-destructive);
+    transition: width 0.1s linear;
+}
+
+.custom-seek-input {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 18px;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.custom-seek-thumb {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--player-destructive);
+    transform: translate(-50%, -50%);
+    transition: transform 0.2s ease;
+    z-index: 3;
+}
+
+.custom-seekbar:hover .custom-seekbar-track {
+    height: 6px;
+}
+
+.custom-seekbar:hover .custom-seek-thumb {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.custom-live-badge {
+    background: var(--player-destructive);
+    color: var(--player-foreground);
+    border-radius: 9999px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 0;
+    cursor: pointer;
+}
+
+.custom-live-badge.back-live {
+    background: rgba(255, 255, 255, 0.35);
+    color: #111;
+}
+
+.custom-controls-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.custom-controls-left,
+.custom-controls-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.custom-volume {
+    position: relative;
+    width: 90px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.custom-volume-track {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.custom-volume-fill {
+    height: 100%;
+    width: 100%;
+    background: var(--player-destructive);
+}
+
+.custom-volume-input {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 18px;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.custom-icon-btn {
+    color: var(--player-foreground);
+    height: 32px;
+    width: 32px;
+    border-radius: 6px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.custom-icon-btn svg,
+.custom-pill-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.custom-icon-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.custom-icon-btn:active {
+    transform: scale(0.95);
+}
+
+.custom-pill-btn {
+    background: rgba(30, 30, 30, 0.95);
+    border-radius: 9999px;
+    padding: 0 12px;
+    height: 40px;
+    min-height: 40px;
+    border: 1px solid var(--player-border);
+    color: var(--player-foreground);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.custom-pill-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.custom-menu {
+    position: absolute;
+    right: 16px;
+    bottom: 80px;
+    min-width: 200px;
+    max-height: 240px;
+    overflow-y: auto;
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid var(--player-border);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    padding: 8px;
+    z-index: 50;
+}
+
+.custom-menu button {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    color: var(--player-foreground);
+    font-size: 14px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    text-align: start;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.custom-menu button:hover,
+.custom-menu button[aria-checked=true] {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.custom-menu button[aria-checked=true] {
+    color: var(--player-destructive);
+}
+
+.shaka-hidden {
+    display: none !important;
+}
+
+.shaka-video-container {
+    position: relative;
+    top: 0;
+    left: 0;
+    display: flex;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.shaka-video-container .material-icons-round {
+    font-family: "Material Icons Round";
+    font-size: 24px;
+}
+
+.shaka-video-container:fullscreen {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+}
+
+.shaka-video-container:fullscreen .shaka-text-container {
+    font-size: 4.4vmin;
+}
+
+.shaka-video-container:-webkit-full-screen {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+}
+
+.shaka-video-container:-webkit-full-screen .shaka-text-container {
+    font-size: 4.4vmin;
+}
+
+.shaka-video-container:-moz-full-screen {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+}
+
+.shaka-video-container:-moz-full-screen .shaka-text-container {
+    font-size: 4.4vmin;
+}
+
+.shaka-video-container:-ms-fullscreen {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+}
+
+.shaka-video-container:-ms-fullscreen .shaka-text-container {
+    font-size: 4.4vmin;
+}
+
+/* Controls Container */
+.shaka-controls-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    z-index: 40;
+    transition: opacity 0.3s ease;
+}
+
+.shaka-video-container:not([shaka-controls=true]) .shaka-controls-container {
+    display: none;
+}
+
+.shaka-controls-container * {
+    flex-shrink: 0;
+}
+
+.shaka-controls-container[casting=true] .shaka-fullscreen-button {
+    display: none;
+}
+
+.shaka-canvas-container,
+.shaka-vr-canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Modern Bottom Gradient */
+.shaka-scrim-container {
+    margin: 0;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex-shrink: 1;
+    opacity: 0;
+    transition: opacity cubic-bezier(0.4, 0, 0.6, 1) 0.4s;
+    height: 180px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+    pointer-events: none;
+}
+
+.shaka-controls-container[casting=true] .shaka-scrim-container,
+.shaka-controls-container[shown=true] .shaka-scrim-container {
+    opacity: 1;
+}
+
+/* Bottom Controls Container */
+.shaka-bottom-controls {
+    width: 100%;
+    padding: 16px 32px 24px;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Seek Bar Container - Sportika Style */
+.shaka-seek-bar-container {
+    opacity: 0;
+    transition: opacity cubic-bezier(0.4, 0, 0.6, 1) 0.4s;
+    height: 4px;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+    position: relative;
+}
+
+.shaka-seek-bar-container:hover {
+    height: 6px;
+    transition: all 0.2s;
+}
+
+.shaka-controls-container[casting=true] .shaka-seek-bar-container,
+.shaka-controls-container[shown=true] .shaka-seek-bar-container {
+    opacity: 1;
+}
+
+.shaka-seek-bar-container .shaka-range-container {
+    background: rgba(255, 255, 255, 0.2);
+    margin: 0;
+    border-radius: 9999px;
+    height: 100%;
+}
+
+/* Buffered progress bar */
+.shaka-seek-bar-container .shaka-ad-markers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+/* Red Progress Bar - Sportika Style */
+.shaka-seek-bar-container .shaka-range-element::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--player-destructive);
+    border: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transform: scale(0);
+    transition: all 0.2s ease;
+    z-index: 30;
+}
+
+.shaka-seek-bar-container:hover .shaka-range-element::-webkit-slider-thumb {
+    transform: scale(1.1);
+}
+
+.shaka-seek-bar-container .shaka-range-element::-webkit-slider-thumb:hover {
+    transform: scale(1.25);
+}
+
+.shaka-seek-bar-container .shaka-range-element::-webkit-slider-thumb:active {
+    transform: scale(0.9);
+}
+
+.shaka-seek-bar-container .shaka-range-element::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--player-destructive);
+    border: none;
+    cursor: pointer;
+}
+
+/* Control Button Panel - Sportika Style */
+.shaka-controls-button-panel {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    overflow: visible;
+    min-width: 48px;
+    font-size: 14px;
+    font-weight: 500;
+    user-select: none;
+    opacity: 0;
+    transition: opacity cubic-bezier(0.4, 0, 0.6, 1) 0.4s;
+}
+
+.shaka-controls-container[casting=true] .shaka-controls-button-panel,
+.shaka-controls-container[shown=true] .shaka-controls-button-panel {
+    opacity: 1;
+}
+
+/* Modern Control Buttons */
+.shaka-controls-button-panel > * {
+    color: var(--player-foreground);
+    height: 32px;
+    width: 32px;
+    min-width: 32px;
+    line-height: 1;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.shaka-controls-button-panel > .material-icons-round {
+    font-size: 22px;
+}
+
+.shaka-controls-button-panel > *:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transition: all 0.2s;
+}
+
+.shaka-controls-button-panel > *:active {
+    transform: scale(0.95);
+    transition: all 0.2s;
+}
+
+.shaka-controls-button-panel .shaka-overflow-menu-only {
+    display: none;
+}
+
+/* Time Display - Modern Style */
+.shaka-current-time {
+    font-size: 14px;
+    color: var(--player-foreground-muted);
+    cursor: pointer;
+    width: auto;
+    min-width: 45px;
+    padding: 0 8px;
+    font-weight: 500;
+    background: transparent !important;
+}
+
+.shaka-current-time:hover {
+    color: var(--player-foreground);
+    background: transparent !important;
+}
+
+.shaka-current-time[disabled] {
+    background-color: transparent;
+    color: var(--player-foreground-muted);
+    cursor: default;
+}
+
+/* Spacer */
+.shaka-spacer {
+    cursor: default;
+    flex-shrink: 1;
+    flex-grow: 1;
+    margin: 0;
+}
+
+/* Sportika Pill Buttons for Audio/Quality Selection */
+.shaka-overflow-menu-button,
+.shaka-resolution-button {
+    background: var(--player-bg-popover) !important;
+    border-radius: 9999px !important;
+    padding: 0 12px !important;
+    height: 40px !important;
+    width: auto !important;
+    min-width: auto !important;
+    gap: 6px;
+    border: 1px solid var(--player-border) !important;
+    box-shadow: none;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.shaka-overflow-menu-button:hover,
+.shaka-resolution-button:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Center Play Button - Modern Circle */
+.shaka-play-button-container {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    flex-shrink: 1;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.shaka-play-button {
+    box-sizing: border-box;
+    padding: 0;
+    width: 64px;
+    height: 64px;
+    margin: 0;
+    border-radius: 50%;
+    border: none;
+    background-size: 45%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: rgba(255, 255, 255, 0.95);
+    opacity: 0;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.shaka-controls-container[casting=true] .shaka-play-button,
+.shaka-controls-container[shown=true] .shaka-play-button {
+    opacity: 1;
+}
+
+.shaka-play-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+}
+
+.shaka-play-button:active {
+    transform: scale(0.95);
+}
+
+.shaka-play-button[icon=play] {
+    background-image: url("data:image/svg+xml,%3Csvg%20fill%3D%22%23000000%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20width%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M8%205v14l11-7z%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.shaka-play-button[icon=pause] {
+    background-image: url("data:image/svg+xml,%3Csvg%20fill%3D%22%23000000%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20width%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M6%2019h4V5H6v14zm8-14v14h4V5h-4z%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.shaka-play-button[icon=replay] {
+    background-image: url("data:image/svg+xml,%3Csvg%20fill%3D%22%23000000%22%20height%3D%2224px%22%20viewBox%3D%220%20-960%20960%20960%22%20width%3D%2224px%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Cpath%20d%3D%22M480-80q-75%200-140.5-28.5t-114-77q-48.5-48.5-77-114T120-440h80q0%20117%2081.5%20198.5T480-160q117%200%20198.5-81.5T760-440q0-117-81.5-198.5T480-720h-6l62%2062-56%2058-160-160%20160-160%2056%2058-62%2062h6q75%200%20140.5%2028.5t114%2077q48.5%2048.5%2077%20114T840-440q0%2075-28.5%20140.5t-77%20114q-48.5%2048.5-114%2077T480-80Z%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+/* Live Badge Style */
+.shaka-live-button {
+    background: var(--player-destructive) !important;
+    color: var(--player-foreground) !important;
+    border-radius: 9999px !important;
+    padding: 4px 12px !important;
+    height: 28px !important;
+    width: auto !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.shaka-live-button:hover {
+    background: var(--player-destructive-hover) !important;
+}
+
+/* Modern Overflow/Settings Menus */
+.shaka-overflow-menu,
+.shaka-settings-menu {
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    white-space: nowrap;
+    background: var(--player-bg-popover);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 12px;
+    max-height: 280px;
+    min-width: 200px;
+    padding: 8px;
+    opacity: 0;
+    transition: opacity cubic-bezier(0.4, 0, 0.6, 1) 0.3s;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    z-index: 50;
+    right: 16px;
+    bottom: 80px;
+    border: 1px solid var(--player-border);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.shaka-controls-container[casting=true] .shaka-overflow-menu,
+.shaka-controls-container[casting=true] .shaka-settings-menu,
+.shaka-controls-container[shown=true] .shaka-overflow-menu,
+.shaka-controls-container[shown=true] .shaka-settings-menu {
+    opacity: 1;
+}
+
+.shaka-overflow-menu button,
+.shaka-settings-menu button {
+    font-size: 14px;
+    background: transparent;
+    color: var(--player-foreground);
+    border: none;
+    min-height: 40px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    margin: 2px 0;
+}
+
+.shaka-overflow-menu button:hover,
+.shaka-settings-menu button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.shaka-overflow-menu button label,
+.shaka-settings-menu button label {
+    cursor: pointer;
+}
+
+.shaka-overflow-menu i,
+.shaka-settings-menu i {
+    padding-left: 0;
+    padding-right: 10px;
+    opacity: 0.7;
+}
+
+.shaka-overflow-menu i.shaka-chosen-item,
+.shaka-settings-menu i.shaka-chosen-item {
+    order: -1;
+    line-height: 17px;
+    font-size: 18px;
+    color: var(--player-destructive);
+    opacity: 1;
+}
+
+.shaka-overflow-menu.shaka-low-position,
+.shaka-settings-menu.shaka-low-position {
+    bottom: 60px;
+}
+
+.shaka-overflow-button-label {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.shaka-current-selection-span {
+    font-size: 12px;
+    color: var(--player-destructive);
+    margin-left: auto;
+}
+
+/* Back Button in Settings */
+.shaka-back-to-overflow-button {
+    border-bottom: 1px solid var(--player-border) !important;
+    margin-bottom: 4px !important;
+    padding-bottom: 10px !important;
+}
+
+.shaka-back-to-overflow-button span {
+    margin-left: 0;
+}
+
+.shaka-back-to-overflow-button i {
+    padding-right: 8px;
+}
+
+/* Volume Bar - Modern Style */
+.shaka-volume-bar-container {
+    width: 80px;
+    padding: 0;
+    transition: all 0.25s ease;
+}
+
+.shaka-volume-bar-container:hover {
+    width: 100px !important;
+    opacity: 1 !important;
+}
+
+.shaka-volume-bar-container .shaka-range-container {
+    background: rgba(255, 255, 255, 0.2);
+    height: 4px;
+    border-radius: 9999px;
+}
+
+.shaka-mute-button + .shaka-volume-bar-container:not(:focus-within) {
+    width: 0;
+    opacity: 0;
+}
+
+.shaka-mute-button:hover + .shaka-volume-bar-container {
+    width: 80px;
+    opacity: 1;
+}
+
+/* Range Elements */
+.shaka-range-container {
+    position: relative;
+    top: 0;
+    left: 0;
+    margin: 0;
+    height: 4px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.2);
+    box-sizing: content-box;
+}
+
+.shaka-range-element {
+    -webkit-appearance: none;
+    background: transparent;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    height: 16px;
+    top: calc((4px - 16px) / 2);
+    z-index: 1;
+}
+
+.shaka-range-element::-webkit-slider-runnable-track {
+    width: 100%;
+    cursor: pointer;
+    height: 16px;
+    background: transparent;
+    color: transparent;
+    border: none;
+}
+
+.shaka-range-element::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    border-radius: 50%;
+    height: 12px;
+    width: 12px;
+    background: var(--player-foreground);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.shaka-range-element::-moz-range-track {
+    width: 100%;
+    cursor: pointer;
+    height: 16px;
+    background: transparent;
+    color: transparent;
+    border: none;
+}
+
+.shaka-range-element::-moz-range-thumb {
+    border: none;
+    border-radius: 50%;
+    height: 12px;
+    width: 12px;
+    background: var(--player-foreground);
+}
+
+/* Loading Spinner */
+.shaka-spinner-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.shaka-video-container:not([shaka-controls=true]) .shaka-spinner-container {
+    display: none;
+}
+
+.shaka-spinner-container svg circle {
+    stroke: var(--player-destructive) !important;
+}
+
+/* Text Container */
+.shaka-text-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    pointer-events: none;
+    width: 100%;
+    min-width: 48px;
+    transition: bottom cubic-bezier(0.4, 0, 0.6, 1) 0.1s;
+    transition-delay: 0.5s;
+    font-size: 20px;
+    line-height: 1.4;
+    color: var(--player-foreground);
+}
+
+.shaka-text-container span.shaka-text-wrapper {
+    display: inline;
+    background: transparent;
+}
+
+.shaka-controls-container[shown=true] ~ .shaka-text-container {
+    transition-delay: 0s;
+}
+
+/* Statistics Container */
+.shaka-statistics-container {
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    min-width: 280px;
+    color: var(--player-foreground);
+    background: var(--player-bg-popover);
+    backdrop-filter: blur(20px);
+    font-size: 13px;
+    padding: 16px;
+    border-radius: 12px;
+    position: absolute;
+    z-index: 50;
+    left: 16px;
+    top: 16px;
+    max-height: calc(100% - 120px);
+    opacity: 0;
+    transition: opacity cubic-bezier(0.4, 0, 0.6, 1) 0.4s;
+    border: 1px solid var(--player-border);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.shaka-controls-container[casting=true] .shaka-statistics-container,
+.shaka-controls-container[shown=true] .shaka-statistics-container {
+    opacity: 1;
+}
+
+.shaka-statistics-container div {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+}
+
+.shaka-statistics-container span {
+    color: var(--player-foreground-muted);
+}
+
+/* Context Menu */
+.shaka-context-menu {
+    overflow-x: hidden;
+    overflow-y: auto;
+    white-space: nowrap;
+    background: var(--player-bg-popover);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    min-width: 180px;
+    padding: 8px;
+    opacity: 0;
+    transition: opacity cubic-bezier(0.4, 0, 0.6, 1) 0.3s;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    z-index: 50;
+    border: 1px solid var(--player-border);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.shaka-controls-container[casting=true] .shaka-context-menu,
+.shaka-controls-container[shown=true] .shaka-context-menu {
+    opacity: 1;
+}
+
+.shaka-context-menu button {
+    font-size: 14px;
+    background: transparent;
+    color: var(--player-foreground);
+    border: none;
+    min-height: 36px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.shaka-context-menu button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.shaka-context-menu button label {
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+/* Fast Forward / Rewind Overlays */
+.shaka-hidden-fast-forward-container,
+.shaka-hidden-rewind-container {
+    height: 100%;
+    width: 40%;
+    flex-shrink: 1;
+}
+
+.shaka-hidden-fast-forward-container {
+    position: absolute;
+    left: 60%;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.shaka-hidden-rewind-container {
+    position: absolute;
+    left: 0;
+    right: 60%;
+    top: 0;
+    bottom: 0;
+}
+
+.shaka-fast-forward-container,
+.shaka-rewind-container {
+    height: 100%;
+    width: 100%;
+    flex-shrink: 1;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    border: none;
+    color: var(--player-foreground);
+    background-color: rgba(0, 0, 0, 0.4);
+    cursor: default;
+    font-size: 18px;
+    opacity: 0;
+    user-select: none;
+}
+
+.shaka-fast-forward-container {
+    border-radius: 50% 0 0 50%;
+}
+
+.shaka-rewind-container {
+    border-radius: 0 50% 50% 0;
+}
+
+.shaka-forward-rewind-container-icon {
+    font-family: "Material Icons Round";
+    font-size: 32px;
+}
+
+/* Tooltips - Modern Style */
+.shaka-tooltips-on {
+    overflow: visible;
+}
+
+.shaka-tooltips-on > .shaka-tooltip,
+.shaka-tooltips-on > .shaka-tooltip-status {
+    position: relative;
+}
+
+.shaka-tooltips-on > .shaka-tooltip:hover:after,
+.shaka-tooltips-on > .shaka-tooltip:focus-visible:after,
+.shaka-tooltips-on > .shaka-tooltip-status:hover:after,
+.shaka-tooltips-on > .shaka-tooltip-status:focus-visible:after {
+    content: attr(aria-label);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.4;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--player-bg-popover);
+    color: var(--player-foreground);
+    border-radius: 8px;
+    padding: 8px 12px;
+    position: absolute;
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--player-border);
+    backdrop-filter: blur(10px);
+}
+
+.shaka-tooltips-on > .shaka-tooltip-status:hover:after,
+.shaka-tooltips-on > .shaka-tooltip-status:focus-visible:after {
+    content: attr(aria-label) " (" attr(shaka-status) ")";
+}
+
+.shaka-tooltips-on.shaka-tooltips-low-position > .shaka-tooltip:hover:after,
+.shaka-tooltips-on.shaka-tooltips-low-position > .shaka-tooltip:focus-visible:after {
+    bottom: 40px;
+}
+
+/* Thumbnail Preview */
+#shaka-player-ui-thumbnail-container {
+    background-color: #000;
+    border: 2px solid var(--player-foreground);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    min-width: 150px;
+    overflow: hidden;
+    position: absolute;
+    visibility: hidden;
+    width: 15%;
+    z-index: 50;
+    pointer-events: none;
+    border-radius: 8px;
+}
+
+#shaka-player-ui-thumbnail-container #shaka-player-ui-thumbnail-image {
+    position: absolute;
+}
+
+#shaka-player-ui-thumbnail-container #shaka-player-ui-thumbnail-time-container {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    display: flex;
+    justify-content: center;
+}
+
+#shaka-player-ui-thumbnail-container #shaka-player-ui-thumbnail-time-container #shaka-player-ui-thumbnail-time {
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 4px;
+    color: var(--player-foreground);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 8px;
+    margin-bottom: 6px;
+}
+
+#shaka-player-ui-time-container {
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 6px;
+    color: var(--player-foreground);
+    display: flex;
+    font-size: 12px;
+    font-weight: 600;
+    justify-content: center;
+    overflow: hidden;
+    padding: 6px 10px;
+    position: absolute;
+    visibility: hidden;
+    z-index: 50;
+}
+
+/* Quality Marks */
+.shaka-current-quality-mark,
+.shaka-quality-mark {
+    color: var(--player-destructive);
+    margin-left: 4px !important;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* Updated Quality Badge Effect */
+.shaka-overflow-playback-rate-mark,
+.shaka-overflow-quality-mark {
+    background: var(--player-destructive) !important;
+    color: var(--player-foreground) !important;
+    border-radius: 4px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: normal;
+    text-shadow: none;
+    padding: 3px 6px;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
+    animation: pulse-soft 2s infinite;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.5px;
+}
+
+@keyframes pulse-soft {
+    0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+    70% { box-shadow: 0 0 0 4px rgba(220, 38, 38, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+}
+
+/* Ad Container Styles */
+.shaka-controls-container[ad-active=true] {
+    pointer-events: none;
+}
+
+.shaka-controls-container[ad-active=true] .shaka-bottom-controls {
+    pointer-events: auto;
+}
+
+.shaka-client-side-ad-container,
+.shaka-server-side-ad-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.shaka-video-container[shaka-controls=true] .shaka-client-side-ad-container iframe,
+.shaka-video-container[shaka-controls=true] .shaka-server-side-ad-container iframe {
+    height: 90%;
+}
+
+.shaka-server-side-ad-container {
+    width: 100%;
+    height: 100%;
+    flex-shrink: 1;
+}
+
+.shaka-server-side-ad-container:not([ad-active=true]) {
+    pointer-events: none;
+}
+
+/* Ad Controls */
+.shaka-ad-controls {
+    display: flex;
+    flex-direction: row;
+    z-index: 1;
+    padding-bottom: 1%;
+}
+
+.shaka-video-container:not([shaka-controls=true]) .shaka-ad-controls {
+    display: none;
+}
+
+.shaka-ad-controls button,
+.shaka-ad-controls div {
+    color: var(--player-foreground);
+    font-size: initial;
+}
+
+.shaka-ad-info {
+    font-size: 13px;
+    color: var(--player-foreground);
+    width: auto;
+    padding: 0 8px;
+}
+
+.shaka-ad-info[disabled] {
+    background-color: transparent;
+    color: var(--player-foreground);
+    cursor: default;
+    padding: 0;
+}
+
+.shaka-skip-ad-container {
+    position: relative;
+    right: calc((100% - 98%) / 2 * -1);
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    margin-left: auto;
+}
+
+.shaka-skip-ad-button {
+    padding: 10px 24px;
+    background: var(--player-foreground);
+    border: none;
+    cursor: pointer;
+    color: #000;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+}
+
+.shaka-skip-ad-button:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: scale(1.02);
+}
+
+.shaka-skip-ad-button:disabled {
+    background: rgba(255, 255, 255, 0.3);
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.shaka-skip-ad-counter {
+    padding: 10px 16px;
+    background: rgba(0, 0, 0, 0.8);
+    margin: 0;
+    font-size: 14px;
+    border: 1px solid var(--player-border);
+    border-radius: 6px;
+}
+
+/* No Cursor Mode */
+.shaka-video-container.no-cursor {
+    cursor: none !important;
+}
+
+.shaka-video-container.no-cursor * {
+    cursor: none !important;
+}
+
+/* Focus States */
+.shaka-controls-container button:focus,
+.shaka-controls-container input:focus {
+    outline: none;
+}
+
+.shaka-controls-container:not(.shaka-keyboard-navigation) button:focus,
+.shaka-controls-container:not(.shaka-keyboard-navigation) input:focus {
+    outline: 0;
+}
+
+.shaka-keyboard-navigation .shaka-overflow-menu button:focus,
+.shaka-keyboard-navigation .shaka-settings-menu button:focus {
+    background: rgba(255, 255, 255, 0.15);
+    outline: 2px solid var(--player-ring);
+    outline-offset: -2px;
+}
+
+/* Fonts */
+@font-face {
+    font-family: 'Material Icons Round';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialiconsround/v109/LDItaoyNOAY6Uewc665JcIzCKsKc_M9flwmM.otf) format('opentype');
+}
+
+.material-icons-round {
+    font-family: 'Material Icons Round';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+}
+
+/* Mobile Responsive */
+@media (max-width: 640px) {
+    .shaka-bottom-controls {
+        padding: 12px 16px 16px;
+        gap: 12px;
+    }
+    
+    .shaka-controls-button-panel > * {
+        height: 28px;
+        width: 28px;
+        min-width: 28px;
+    }
+    
+    .shaka-controls-button-panel > .material-icons-round {
+        font-size: 20px;
+    }
+    
+    .shaka-play-button {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .shaka-current-time {
+        font-size: 12px;
+        min-width: 40px;
+    }
+    
+    .shaka-overflow-menu,
+    .shaka-settings-menu {
+        right: 8px;
+        bottom: 60px;
+        min-width: 180px;
+    }
+
+    .custom-controls {
+        padding: 12px 16px 16px;
+        gap: 12px;
+    }
+
+    .custom-icon-btn {
+        height: 28px;
+        width: 28px;
+    }
+
+    .custom-time {
+        font-size: 12px;
+        min-width: 40px;
+    }
+
+    .custom-pill-btn {
+        height: 36px;
+        min-height: 36px;
+        font-size: 12px;
+    }
+
+    .custom-volume {
+        width: 70px;
+    }
+
+    .custom-menu {
+        right: 8px;
+        bottom: 64px;
+        min-width: 180px;
+    }
+}

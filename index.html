@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DRMAX - PLAYER</title>
+  
+  <!-- Material icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <!-- Shaka Player CSS -->
+  <link rel="stylesheet" href="style.css">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0f1115;
+      --bg-panel: #181b21;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --accent: #06b6d4;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: #27272a;
+      --input-bg: #0f1115;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: var(--bg-panel);
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .header h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text);
+    }
+
+    .header h1 .material-icons {
+      font-size: 2rem;
+      color: var(--primary);
+    }
+    
+    .header h1 span[style] {
+      background: rgba(79, 70, 229, 0.1);
+      color: var(--primary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem !important;
+      font-weight: 600 !important;
+      margin-left: 1rem;
+      opacity: 1 !important;
+      border: 1px solid rgba(79, 70, 229, 0.2);
+    }
+
+    .main-container {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      padding: 2rem;
+      gap: 2rem;
+      max-width: 1920px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .player-section {
+      min-width: 0;
+    }
+
+    .controls-section {
+      min-width: 350px;
+    }
+
+    .card {
+      background: var(--bg-panel);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text);
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card h2 .material-icons {
+      font-size: 1.5rem;
+      color: var(--text-muted);
+    }
+
+    #video-container {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--border);
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .form-group label .material-icons {
+        font-size: 1.1em;
+        color: var(--primary);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.875rem;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+    }
+    
+     .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+    }
+    
+    .form-group small {
+        color: var(--text-muted) !important;
+        margin-top: 0.5rem !important;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.875rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+    
+    .btn:active {
+        transform: translateY(0);
+    }
+
+    .btn.btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      margin-top: 0.75rem;
+    }
+
+    .btn.btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: var(--text-muted);
+      color: var(--text);
+    }
+
+    .status {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      display: none;
+      line-height: 1.5;
+    }
+
+    .status.show { display: block; }
+    .status.error { background: rgba(220, 38, 38, 0.1); color: #ef4444; border: 1px solid rgba(220, 38, 38, 0.2); }
+    .status.success { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
+
+    .preset-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      background: var(--input-bg);
+      padding: 0.25rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .preset-btn {
+      padding: 0.5rem;
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .preset-btn:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .info-section {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .info-item .label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .info-item .value {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      font-feature-settings: "tnum";
+    }
+
+    @media (max-width: 1024px) {
+      .main-container {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+      
+      .controls-section {
+        max-width: 100%;
+        min-width: 0;
+      }
+    }
+
+    /* Loading spinner */
+    .loading {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 100;
+    }
+
+    .loading.show {
+      display: block;
+    }
+
+    .spinner {
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    /* Shaka Player Theme Overrides */
+    .shaka-overflow-menu, 
+    .shaka-settings-menu {
+      background-color: rgba(24, 27, 33, 0.95) !important;
+      color: var(--text) !important;
+      border: 1px solid var(--border) !important;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+      border-radius: 8px !important;
+    }
+    
+    .shaka-overflow-menu button, 
+    .shaka-settings-menu button {
+      color: var(--text) !important;
+      transition: all 0.2s;
+    }
+
+    .shaka-overflow-menu button:hover, 
+    .shaka-settings-menu button:hover {
+      background-color: rgba(79, 70, 229, 0.2) !important;
+      color: var(--primary) !important;
+    }
+    
+    .shaka-seek-bar-container .shaka-seek-bar-fill {
+      background-color: var(--primary) !important;
+    }
+    
+    .shaka-volume-bar-container .shaka-volume-bar-fill {
+      background-color: var(--primary) !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>
+      <span class="material-icons">play_circle</span>
+      DRMAX - PLAYER
+      <span style="font-size: 0.875rem; font-weight: 400; margin-left: 1rem; opacity: 0.8;">
+        🔐 ClearKey DRM Player
+      </span>
+    </h1>
+  </div>
+
+  <div class="main-container">
+    <div class="player-section">
+      <div class="card">
+        <div style="position: relative;">
+          <div id="video-container" class="shaka-video-container" shaka-controls="true">
+            <video id="video" poster="" playsinline></video>
+            <div class="custom-pause-overlay" id="custom-pause-overlay" aria-hidden="true">
+              <div class="custom-pause-icon">
+                <svg width="100" height="100" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="28" cy="28" r="26" fill="rgba(0,0,0,0.35)" />
+                  <path d="M22 17.5L39 28L22 38.5V17.5Z" fill="#ffffff" />
+                </svg>
+              </div>
+            </div>
+            <div class="custom-controls" id="custom-controls" dir="ltr">
+              <div class="custom-controls-top">
+                <span class="custom-time" id="custom-current-time">0:00</span>
+                <div class="custom-seekbar">
+                  <div class="custom-seekbar-track">
+                    <div class="custom-seekbar-buffer" id="custom-buffered"></div>
+                    <div class="custom-seekbar-progress" id="custom-progress"></div>
+                  </div>
+                  <input
+                    id="custom-seek-input"
+                    class="custom-seek-input"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="0"
+                    step="0.1"
+                    aria-label="Video seeker"
+                  />
+                  <div class="custom-seek-thumb" id="custom-seek-thumb"></div>
+                </div>
+                <button class="custom-live-badge" id="custom-live-badge" type="button" hidden>Live</button>
+              </div>
+              <div class="custom-controls-bottom">
+                <div class="custom-controls-left">
+                  <button class="custom-icon-btn" id="custom-play" aria-label="Play">
+                    <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5">
+                      <path d="M3.34375 4.83788C3.344 3.30853 4.99642 2.34989 6.32422 3.10741L6.32324 3.10838L19.0098 10.3389L19.3408 10.5283V10.5722C20.4206 11.4885 20.3091 13.2653 19.0107 14.0068H19.0098L6.32324 21.2383C4.99538 21.9956 3.34375 21.0372 3.34375 19.5078V4.83788Z" fill="currentColor"></path>
+                    </svg>
+                  </button>
+                  <button class="custom-icon-btn" id="custom-rewind" aria-label="Rewind 10 seconds">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 24 24" fill="none" class="h-4 w-4">
+                      <g>
+                        <path d="M3 12C3 13.78 3.52784 15.5201 4.51677 17.0001C5.50571 18.4802 6.91131 19.6337 8.55585 20.3149C10.2004 20.9961 12.01 21.1743 13.7558 20.8271C15.5016 20.4798 17.1053 19.6226 18.364 18.364C19.6226 17.1053 20.4798 15.5016 20.8271 13.7558C21.1743 12.01 20.9961 10.2004 20.3149 8.55585C19.6337 6.91131 18.4802 5.50571 17.0001 4.51677C15.5201 3.52784 13.78 3 12 3C9.48395 3.00947 7.06897 3.99122 5.26 5.74L3 8M3 8V5M3 8H6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                      </g>
+                      <g>
+                        <path d="M15.4877 9.92728H12.8515L12.6951 11.9748H12.7478L13.181 11.3259C13.4498 11.2332 13.7449 11.1824 14.0571 11.1824C15.219 11.1909 15.9998 11.8232 16 12.9943C16 14.2078 15.141 15 13.71 15C12.7822 15 12.0537 14.6549 11.594 14.0147L12.1924 13.3401C12.5654 13.812 13.0426 14.124 13.6757 14.124C14.4733 14.1238 14.8198 13.6688 14.8199 13.0285C14.8199 12.3964 14.4731 12.0679 13.8313 12.0679C13.3804 12.0679 12.869 12.2281 12.4701 12.4555L11.6977 12.2361L11.9411 9H15.4877V9.92728Z" fill="white"></path>
+                        <path d="M10.3761 14.8992H9.24868V10.2056H9.21441C8.97156 10.5595 8.54632 10.8289 8 10.8289V9.90166C8.55505 9.90166 9.1014 9.45506 9.32689 9H10.3761V14.8992Z" fill="white"></path>
+                      </g>
+                    </svg>
+                  </button>
+                  <button class="custom-icon-btn" id="custom-forward" aria-label="Forward 10 seconds">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 24 24" fill="none" class="h-4 w-4">
+                      <g>
+                        <path d="M21 12C21 13.78 20.4722 15.5201 19.4832 17.0001C18.4943 18.4802 17.0887 19.6337 15.4442 20.3149C13.7996 20.9961 11.99 21.1743 10.2442 20.8271C8.49836 20.4798 6.89472 19.6226 5.63604 18.364C4.37737 17.1053 3.5202 15.5016 3.17294 13.7558C2.82567 12.01 3.0039 10.2004 3.68509 8.55585C4.36628 6.91131 5.51983 5.50571 6.99987 4.51677C8.47991 3.52784 10.22 3 12 3C14.52 3 16.93 4 18.74 5.74L21 8M21 8V5M21 8H18" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                      </g>
+                      <g>
+                        <path d="M15.4877 9.92728H12.8515L12.6951 11.9748H12.7478L13.181 11.3259C13.4498 11.2332 13.7449 11.1824 14.0571 11.1824C15.219 11.1909 15.9998 11.8232 16 12.9943C16 14.2078 15.141 15 13.71 15C12.7822 15 12.0537 14.6549 11.594 14.0147L12.1924 13.3401C12.5654 13.812 13.0426 14.124 13.6757 14.124C14.4733 14.1238 14.8198 13.6688 14.8199 13.0285C14.8199 12.3964 14.4731 12.0679 13.8313 12.0679C13.3804 12.0679 12.869 12.2281 12.4701 12.4555L11.6977 12.2361L11.9411 9H15.4877V9.92728Z" fill="white"></path>
+                        <path d="M10.3761 14.8992H9.24868V10.2056H9.21441C8.97156 10.5595 8.54632 10.8289 8 10.8289V9.90166C8.55505 9.90166 9.1014 9.45506 9.32689 9H10.3761V14.8992Z" fill="white"></path>
+                      </g>
+                    </svg>
+                  </button>
+                  <button class="custom-icon-btn" id="custom-mute" aria-label="Mute">
+                    <svg width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4">
+                      <path d="M14.9794 12.4609V22.3334C14.9794 23.3584 13.8119 23.9484 12.9869 23.3384L2.62937 15.6884C0.456875 14.0834 0.456875 10.8359 2.62937 9.23094L12.9869 1.58094C13.8119 0.970943 14.9794 1.56093 14.9794 2.58593V12.4584V12.4609Z" stroke="currentColor" stroke-width="1.75" stroke-miterlimit="10" stroke-linecap="round"></path>
+                      <path d="M20.9893 21.3688C25.9093 16.4488 25.9093 8.46883 20.9893 3.54883" stroke="currentColor" stroke-width="1.75" stroke-miterlimit="10" stroke-linecap="round"></path>
+                      <path d="M19.1416 16.9158C21.6016 14.4558 21.6016 10.4659 19.1416 8.00586" stroke="currentColor" stroke-width="1.75" stroke-miterlimit="10" stroke-linecap="round"></path>
+                    </svg>
+                  </button>
+                  <div class="custom-volume">
+                    <div class="custom-volume-track">
+                      <div class="custom-volume-fill" id="custom-volume-fill"></div>
+                    </div>
+                    <input
+                      id="custom-volume-input"
+                      class="custom-volume-input"
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value="1"
+                      aria-label="Volume"
+                    />
+                  </div>
+                </div>
+                <div class="custom-controls-right">
+                  <button class="custom-pill-btn" id="custom-audio-btn" aria-label="Audio tracks">
+                    <svg width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg" class="size-5">
+                      <path d="M14.9794 12.4609V22.3334C14.9794 23.3584 13.8119 23.9484 12.9869 23.3384L2.62937 15.6884C0.456875 14.0834 0.456875 10.8359 2.62937 9.23094L12.9869 1.58094C13.8119 0.970943 14.9794 1.56093 14.9794 2.58593V12.4584V12.4609Z" stroke="currentColor" stroke-width="1.75" stroke-miterlimit="10" stroke-linecap="round"></path>
+                      <path d="M20.9893 21.3688C25.9093 16.4488 25.9093 8.46883 20.9893 3.54883" stroke="currentColor" stroke-width="1.75" stroke-miterlimit="10" stroke-linecap="round"></path>
+                      <path d="M19.1416 16.9158C21.6016 14.4558 21.6016 10.4659 19.1416 8.00586" stroke="currentColor" stroke-width="1.75" stroke-miterlimit="10" stroke-linecap="round"></path>
+                    </svg>
+                    <span id="custom-audio-label">فهد العتيبي</span>
+                  </button>
+                  <button class="custom-pill-btn" id="custom-quality-btn" aria-label="Quality">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="size-6">
+                      <path d="M4.40332 4.09375H19.5967C20.3195 4.09399 20.906 4.68048 20.9062 5.40332V17.0381C20.9062 17.7611 20.3197 18.3484 19.5967 18.3486H4.40332C3.68033 18.3484 3.09375 17.7611 3.09375 17.0381V5.40332C3.09399 4.68048 3.68048 4.09399 4.40332 4.09375ZM4.40332 5.2168C4.29958 5.21703 4.21703 5.29958 4.2168 5.40332V17.0381C4.2168 17.142 4.29944 17.2254 4.40332 17.2256H19.5967C19.7006 17.2254 19.7832 17.142 19.7832 17.0381V5.40332C19.783 5.29958 19.7004 5.21703 19.5967 5.2168H4.40332Z" fill="currentColor" stroke="currentColor" stroke-width="0.187169"></path>
+                      <path d="M8.34766 19.7871H15.6543C15.9638 19.7871 16.2158 20.0391 16.2158 20.3486C16.2157 20.6581 15.9638 20.9102 15.6543 20.9102H8.34766C8.03817 20.9102 7.78623 20.6581 7.78613 20.3486C7.78613 20.0391 8.03811 19.7871 8.34766 19.7871Z" fill="currentColor" stroke="currentColor" stroke-width="0.187169"></path>
+                      <path d="M9.56055 7.56543C9.78081 7.43791 10.0545 7.43571 10.2764 7.56152L15.6006 10.5977C15.8238 10.7249 15.9618 10.9632 15.9619 11.2197C15.9619 11.4761 15.8225 11.7152 15.6006 11.8428L10.2764 14.8789H10.2754C10.1755 14.9364 10.0643 14.9659 9.95215 14.9707H9.91992C9.79534 14.9707 9.67102 14.9393 9.56055 14.875C9.34086 14.7478 9.20508 14.5091 9.20508 14.2559V8.18457C9.20508 7.92999 9.34228 7.69294 9.56055 7.56543ZM10.1387 13.8779L10.2793 13.7979L14.6582 11.3018L14.8008 11.2197L14.6582 11.1387L10.2793 8.6416L10.1387 8.5625V13.8779Z" fill="currentColor" stroke="currentColor" stroke-width="0.187169"></path>
+                    </svg>
+                    <span id="custom-quality-label">AUTO</span>
+                  </button>
+                  <button class="custom-icon-btn" id="custom-fullscreen" aria-label="Fullscreen">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                      <path d="M8 3H5a2 2 0 0 0-2 2v3"></path>
+                      <path d="M21 8V5a2 2 0 0 0-2-2h-3"></path>
+                      <path d="M3 16v3a2 2 0 0 0 2 2h3"></path>
+                      <path d="M16 21h3a2 2 0 0 0 2-2v-3"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="custom-menu" id="custom-audio-menu" hidden></div>
+              <div class="custom-menu" id="custom-quality-menu" hidden></div>
+            </div>
+          </div>
+          <div class="loading" id="loading">
+            <div class="spinner"></div>
+          </div>
+        </div>
+        
+        <div class="info-section" id="player-info" style="display: none;">
+          <div class="info-item">
+            <span class="label">Status:</span>
+            <span class="value" id="status-value">Ready</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Resolution:</span>
+            <span class="value" id="resolution-value">-</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Bandwidth:</span>
+            <span class="value" id="bandwidth-value">-</span>
+          </div>
+          <div class="info-item">
+            <span class="label">DRM:</span>
+            <span class="value" id="drm-value">None</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls-section">
+      <div class="card">
+        <h2>
+          <span class="material-icons">settings</span>
+          Player Configuration
+        </h2>
+
+        <div class="preset-buttons">
+          <button class="preset-btn" onclick="loadPreset('example')">� Example Stream</button>
+          <button class="preset-btn" onclick="loadPreset('shaka')">� Shaka Demo</button>
+          <button class="preset-btn" onclick="loadPreset('clear')">🗑️ Clear All</button>
+        </div>
+
+        <form id="player-form">
+          <div class="form-group">
+            <label for="manifest-url">
+              <span class="material-icons">link</span>
+              Video URL (Master/Variant MPD/M3U8)
+            </label>
+            <input 
+              type="text" 
+              id="manifest-url" 
+              placeholder="https://example.com/stream.m3u8"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="audio-url">
+              <span class="material-icons">audiotrack</span>
+              Audio URL (Optional, for separate audio)
+            </label>
+            <input 
+              type="text" 
+              id="audio-url" 
+              placeholder="https://example.com/audio.m3u8"
+            />
+            <small style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-top: 0.25rem; display: block;">If provided, will be synchronized with the video URL.</small>
+          </div>
+
+          <div class="form-group">
+            <label for="key-id">
+              <span class="material-icons">fingerprint</span>
+              Key ID (k1)
+            </label>
+            <input 
+              type="text" 
+              id="key-id" 
+              placeholder="Key ID"
+            />
+            <small style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-top: 0.25rem; display: block;">32 hex characters, no dashes. Leave empty for unencrypted streams.</small>
+          </div>
+
+          <div class="form-group">
+            <label for="key-value">
+              <span class="material-icons">vpn_key</span>
+              Key (k2)
+            </label>
+            <input 
+              type="text" 
+              id="key-value" 
+              placeholder="KEY"
+            />
+            <small style="color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-top: 0.25rem; display: block;">32 hex characters, no dashes. Leave empty for unencrypted streams.</small>
+          </div>
+
+          <button type="submit" class="btn">
+            <span class="material-icons">play_arrow</span>
+            Load Stream
+          </button>
+
+          <button type="button" class="btn btn-secondary" onclick="stopStream()">
+            <span class="material-icons">stop</span>
+            Stop
+          </button>
+        </form>
+
+        <div class="status" id="status-message"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shaka Player from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.15.10/shaka-player.compiled.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.15.10/shaka-player.ui.js"></script>
+
+  <script src="player-tool.js"></script>
+</body>
+</html>
